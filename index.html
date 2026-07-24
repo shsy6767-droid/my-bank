@@ -9,7 +9,7 @@
   <!-- EmailJS SDK for email notifications -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
-    // Initialize EmailJS (Replace with your actual Public Key)
+    // Initialize EmailJS with your Public Key
     emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
   </script>
 </head>
@@ -56,7 +56,7 @@
     <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
       <div>
         <p class="text-xs text-slate-400">Welcome Back,</p>
-        <h2 class="text-lg font-bold text-slate-100">Champion Brother</h2>
+        <h2 class="text-lg font-bold text-slate-100">Muaaz</h2>
       </div>
       <div class="flex items-center gap-2">
         <!-- Admin Toggle Button -->
@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <!-- ADMIN PANEL (Hidden by Default & Password Protected) -->
+    <!-- ADMIN PANEL -->
     <div id="admin-panel" class="mb-6 p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-xl hidden">
       <div class="flex justify-between items-center mb-3">
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
@@ -137,7 +137,6 @@
 
   <!-- JS LOGIC -->
   <script>
-    // --- CARD & ADMIN CREDENTIALS ---
     const CARD_DATA = {
       cardNumber: "1982 5812 9971 3470", 
       expDate: "01/28",
@@ -150,7 +149,6 @@
     let balance = parseFloat(localStorage.getItem('user_balance')) || 100;
     let transactions = JSON.parse(localStorage.getItem('user_txs')) || [];
 
-    // --- DOM ELEMENTS ---
     const loginScreen = document.getElementById('login-screen');
     const dashboardScreen = document.getElementById('dashboard-screen');
     const loginForm = document.getElementById('login-form');
@@ -165,7 +163,6 @@
     const cardDisplayNum = document.getElementById('card-number-display');
     const cardDisplayExp = document.getElementById('exp-date-display');
 
-    // Admin DOM Elements
     const adminPanel = document.getElementById('admin-panel');
     const adminToggleBtn = document.getElementById('admin-toggle-btn');
     const grantCreditsBtn = document.getElementById('grant-credits-btn');
@@ -173,14 +170,12 @@
     const setZeroBtn = document.getElementById('set-zero-btn');
     const clearTxBtn = document.getElementById('clear-tx-btn');
 
-    // Auto-format card number input
     inputCardNum.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
       value = value.replace(/(.{4})/g, '$1 ').trim();
       e.target.value = value.substring(0, 19);
     });
 
-    // Auto-format expiration date input
     inputExpDate.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
       if (value.length >= 2) {
@@ -189,7 +184,6 @@
       e.target.value = value;
     });
 
-    // Update Dashboard UI
     function updateUI() {
       creditBalanceEl.textContent = balance;
       localStorage.setItem('user_balance', balance);
@@ -214,7 +208,6 @@
       }
     }
 
-    // --- LOGIN HANDLER ---
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const num = inputCardNum.value.trim();
@@ -240,7 +233,6 @@
       isAdminUnlocked = false;
     });
 
-    // --- ADMIN CONTROLS WITH PASSWORD PROTECT ---
     adminToggleBtn.addEventListener('click', () => {
       if (!isAdminUnlocked) {
         const passInput = prompt("Enter Admin Password:");
@@ -284,7 +276,6 @@
       }
     });
 
-    // --- PURCHASE HANDLER ---
     paymentForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const item = document.getElementById('item-name').value;
@@ -310,21 +301,19 @@
       alert(`Payment successful! You purchased: ${item}`);
     });
 
-    // --- EMAIL NOTIFICATION LOGIC ---
+    // --- SEND EMAIL TO shsy6767@gmail.com ---
     function sendEmailNotification(item, cost, remaining) {
       const templateParams = {
+        to_email: 'shsy6767@gmail.com',
         item_name: item,
         item_cost: cost,
         remaining_balance: remaining,
         time: new Date().toLocaleString()
       };
 
-      /* Uncomment and fill when EmailJS is configured:
       emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-        .then(() => console.log('Email sent!'))
+        .then(() => console.log('Transaction email sent to shsy6767@gmail.com!'))
         .catch(err => console.error('Email error:', err));
-      */
-      console.log('Purchase simulated:', templateParams);
     }
   </script>
 </body>
