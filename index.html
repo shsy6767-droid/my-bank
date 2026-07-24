@@ -28,17 +28,17 @@
     <form id="login-form" class="space-y-4">
       <div>
         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">16-Digit Card Number</label>
-        <input type="text" id="card-number" placeholder="1982 5812 9971 3470" maxlength="19" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
+        <input type="text" id="card-number" placeholder="" maxlength="19" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
       </div>
       
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Expiry Date</label>
-          <input type="text" id="exp-date" placeholder="MM/YY" maxlength="5" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
+          <input type="text" id="exp-date" placeholder="" maxlength="5" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
         </div>
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">4-Digit PIN</label>
-          <input type="password" id="pin" placeholder="••••" maxlength="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
+          <input type="password" id="pin" placeholder="" maxlength="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
         </div>
       </div>
 
@@ -50,7 +50,7 @@
   </div>
 
   <!-- ================= DASHBOARD SCREEN ================= -->
-  <div id="dashboard-screen" class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl hidden">
+  <div id="dashboard-screen" class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl hidden relative">
     
     <!-- Top Header -->
     <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
@@ -58,7 +58,37 @@
         <p class="text-xs text-slate-400">Welcome Back,</p>
         <h2 class="text-lg font-bold text-slate-100">Champion Brother</h2>
       </div>
-      <button id="logout-btn" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-3 py-1.5 rounded-md border border-slate-700">Logout</button>
+      <div class="flex items-center gap-2">
+        <!-- Admin Toggle Button -->
+        <button id="admin-toggle-btn" class="text-xs bg-slate-800 hover:bg-emerald-950 hover:text-emerald-400 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition">⚙️ Admin</button>
+        <button id="logout-btn" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-3 py-1.5 rounded-md border border-slate-700">Logout</button>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL (Hidden by Default) -->
+    <div id="admin-panel" class="mb-6 p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-xl hidden">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+          🔒 Parent/Admin Control Panel
+        </h3>
+        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono">Unlimited Credits Mode</span>
+      </div>
+      <div class="space-y-3">
+        <div class="flex gap-2">
+          <input type="number" id="add-credit-amount" placeholder="Amount of credits to add..." min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+          <button id="grant-credits-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap transition">
+            + Grant Credits
+          </button>
+        </div>
+        <div class="flex gap-2">
+          <button id="set-zero-btn" class="w-1/2 bg-slate-800 hover:bg-rose-950/80 text-rose-300 text-xs py-2 rounded-lg border border-slate-700 transition">
+            Set Balance to 0
+          </button>
+          <button id="clear-tx-btn" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 rounded-lg border border-slate-700 transition">
+            Clear History
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Realistic Credit Card Render -->
@@ -107,7 +137,7 @@
 
   <!-- JS LOGIC -->
   <script>
-    // --- UPDATED CARD CREDENTIALS ---
+    // --- CARD CREDENTIALS ---
     const CARD_DATA = {
       cardNumber: "1982 5812 9971 3470", // Spaces included
       expDate: "01/28",
@@ -132,14 +162,22 @@
     const cardDisplayNum = document.getElementById('card-number-display');
     const cardDisplayExp = document.getElementById('exp-date-display');
 
-    // Auto-format card number input (adds spaces every 4 digits)
+    // Admin DOM Elements
+    const adminPanel = document.getElementById('admin-panel');
+    const adminToggleBtn = document.getElementById('admin-toggle-btn');
+    const grantCreditsBtn = document.getElementById('grant-credits-btn');
+    const addCreditInput = document.getElementById('add-credit-amount');
+    const setZeroBtn = document.getElementById('set-zero-btn');
+    const clearTxBtn = document.getElementById('clear-tx-btn');
+
+    // Auto-format card number input
     inputCardNum.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
       value = value.replace(/(.{4})/g, '$1 ').trim();
       e.target.value = value.substring(0, 19);
     });
 
-    // Auto-format expiration date input (adds / automatically)
+    // Auto-format expiration date input
     inputExpDate.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
       if (value.length >= 2) {
@@ -162,9 +200,14 @@
               <p class="text-sm font-medium text-slate-200">${tx.item}</p>
               <p class="text-[10px] text-slate-500">${tx.date}</p>
             </div>
-            <span class="text-sm font-bold text-rose-400">-${tx.cost} Credits</span>
+            <span class="text-sm font-bold ${tx.cost < 0 ? 'text-emerald-400' : 'text-rose-400'}">
+              ${tx.cost < 0 ? '+' + Math.abs(tx.cost) : '-' + tx.cost} Credits
+            </span>
           </div>
         `).join('');
+      } else {
+        noTxMsg.classList.remove('hidden');
+        transactionListEl.innerHTML = `<p id="no-tx-msg" class="text-xs text-slate-500 text-center py-4">No transactions yet.</p>`;
       }
     }
 
@@ -175,9 +218,7 @@
       const exp = inputExpDate.value.trim();
       const pin = document.getElementById('pin').value.trim();
 
-      // Check credentials
       if (num === CARD_DATA.cardNumber && exp === CARD_DATA.expDate && pin === CARD_DATA.pin) {
-        // Update Card UI on dashboard with logged-in credentials
         cardDisplayNum.textContent = num;
         cardDisplayExp.textContent = "EXP: " + exp;
 
@@ -192,6 +233,41 @@
     document.getElementById('logout-btn').addEventListener('click', () => {
       dashboardScreen.classList.add('hidden');
       loginScreen.classList.remove('hidden');
+      adminPanel.classList.add('hidden');
+    });
+
+    // --- ADMIN CONTROLS ---
+    adminToggleBtn.addEventListener('click', () => {
+      adminPanel.classList.toggle('hidden');
+    });
+
+    grantCreditsBtn.addEventListener('click', () => {
+      const amount = parseFloat(addCreditInput.value);
+      if (amount && amount > 0) {
+        balance += amount;
+        transactions.unshift({
+          item: "🎁 Reward Granted (Admin)",
+          cost: -amount,
+          date: new Date().toLocaleString()
+        });
+        updateUI();
+        addCreditInput.value = '';
+        alert(`Successfully added ${amount} credits!`);
+      }
+    });
+
+    setZeroBtn.addEventListener('click', () => {
+      if (confirm("Reset balance to 0 credits?")) {
+        balance = 0;
+        updateUI();
+      }
+    });
+
+    clearTxBtn.addEventListener('click', () => {
+      if (confirm("Clear transaction history?")) {
+        transactions = [];
+        updateUI();
+      }
     });
 
     // --- PURCHASE HANDLER ---
