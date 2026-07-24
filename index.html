@@ -53,16 +53,21 @@
           </select>
         </div>
 
-        <!-- Add Credits -->
-        <div class="flex gap-2">
-          <input type="number" id="add-credit-amount" placeholder="Amount of credits to add..." min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
-          <button id="grant-credits-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap transition">
-            + Grant Credits
-          </button>
+        <!-- Add or Deduct Credits -->
+        <div class="space-y-2">
+          <input type="number" id="admin-credit-amount" placeholder="Amount of credits..." min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+          <div class="flex gap-2">
+            <button id="grant-credits-btn" class="w-1/2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+              + Grant Credits
+            </button>
+            <button id="deduct-credits-btn" class="w-1/2 bg-rose-500 hover:bg-rose-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+              ➖ Deduct Credits
+            </button>
+          </div>
         </div>
 
         <!-- Danger Controls -->
-        <div class="flex gap-2">
+        <div class="flex gap-2 pt-2 border-t border-slate-800">
           <button id="set-zero-btn" class="w-1/2 bg-slate-800 hover:bg-rose-950/80 text-rose-300 text-xs py-2 rounded-lg border border-slate-700 transition">
             Set Balance to 0
           </button>
@@ -201,7 +206,7 @@
       localStorage.setItem(`txs_${userKey}`, JSON.stringify(txs));
     }
 
-    // Initial setup for default balances if not created
+    // Initial setup for default balances
     if (localStorage.getItem('balance_muaaz') === null) setUserBalance('muaaz', 100);
     if (localStorage.getItem('balance_sidrah') === null) setUserBalance('sidrah', 100);
 
@@ -225,7 +230,8 @@
     const adminToggleBtn = document.getElementById('admin-toggle-btn');
     const adminUserSelect = document.getElementById('admin-user-select');
     const grantCreditsBtn = document.getElementById('grant-credits-btn');
-    const addCreditInput = document.getElementById('add-credit-amount');
+    const deductCreditsBtn = document.getElementById('deduct-credits-btn');
+    const adminCreditInput = document.getElementById('admin-credit-amount');
     const setZeroBtn = document.getElementById('set-zero-btn');
     const clearTxBtn = document.getElementById('clear-tx-btn');
 
@@ -328,7 +334,7 @@
     // Admin Grant Credits
     grantCreditsBtn.addEventListener('click', () => {
       const targetUser = adminUserSelect.value;
-      const amount = parseFloat(addCreditInput.value);
+      const amount = parseFloat(adminCreditInput.value);
       if (amount && amount > 0) {
         let currentBal = getUserBalance(targetUser);
         let currentTxs = getUserTxs(targetUser);
@@ -343,8 +349,35 @@
         setUserBalance(targetUser, currentBal);
         setUserTxs(targetUser, currentTxs);
 
-        addCreditInput.value = '';
+        adminCreditInput.value = '';
         alert(`Successfully added ${amount} credits to ${USERS[targetUser].name}!`);
+
+        if (currentUserKey === targetUser) {
+          updateUI();
+        }
+      }
+    });
+
+    // Admin Deduct Credits
+    deductCreditsBtn.addEventListener('click', () => {
+      const targetUser = adminUserSelect.value;
+      const amount = parseFloat(adminCreditInput.value);
+      if (amount && amount > 0) {
+        let currentBal = getUserBalance(targetUser);
+        let currentTxs = getUserTxs(targetUser);
+
+        currentBal = Math.max(0, currentBal - amount);
+        currentTxs.unshift({
+          item: "⚠️ Penalty / Adjustment (Admin)",
+          cost: amount,
+          date: new Date().toLocaleString()
+        });
+
+        setUserBalance(targetUser, currentBal);
+        setUserTxs(targetUser, currentTxs);
+
+        adminCreditInput.value = '';
+        alert(`Deducted ${amount} credits from ${USERS[targetUser].name}.`);
 
         if (currentUserKey === targetUser) {
           updateUI();
