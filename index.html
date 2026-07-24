@@ -35,46 +35,57 @@
     </div>
 
     <!-- ADMIN PANEL (Hidden by Default & Password Protected) -->
-    <div id="admin-panel" class="p-5 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl shadow-2xl hidden">
-      <div class="flex justify-between items-center mb-4 pb-2 border-b border-emerald-500/20">
+    <div id="admin-panel" class="p-5 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl shadow-2xl hidden space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-emerald-500/20">
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
           🔒 Parent/Admin Control Panel
         </h3>
         <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono">Unlocked</span>
       </div>
 
-      <div class="space-y-4">
-        <!-- Target User Selection -->
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Select User to Manage</label>
-          <select id="admin-user-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
-            <option value="muaaz">Muaaz (Card ending 3470)</option>
-            <option value="sidrah">Sidrah (Card ending 2928)</option>
-          </select>
-        </div>
-
-        <!-- Add or Deduct Credits -->
-        <div class="space-y-2">
-          <input type="number" id="admin-credit-amount" placeholder="Amount of credits..." min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
-          <div class="flex gap-2">
-            <button id="grant-credits-btn" class="w-1/2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
-              + Grant Credits
-            </button>
-            <button id="deduct-credits-btn" class="w-1/2 bg-rose-500 hover:bg-rose-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
-              ➖ Deduct Credits
-            </button>
-          </div>
-        </div>
-
-        <!-- Danger Controls -->
-        <div class="flex gap-2 pt-2 border-t border-slate-800">
-          <button id="set-zero-btn" class="w-1/2 bg-slate-800 hover:bg-rose-950/80 text-rose-300 text-xs py-2 rounded-lg border border-slate-700 transition">
-            Set Balance to 0
+      <!-- Quick Access Buttons -->
+      <div class="bg-slate-950/60 p-3 rounded-xl border border-emerald-500/20">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-300 mb-2">🔓 Admin Instant Login (No Card Needed)</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="admin-login-muaaz" class="bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 font-semibold py-2 rounded-lg text-xs transition">
+            Login as Muaaz
           </button>
-          <button id="clear-tx-btn" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 rounded-lg border border-slate-700 transition">
-            Clear History
+          <button id="admin-login-sidrah" class="bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 font-semibold py-2 rounded-lg text-xs transition">
+            Login as Sidrah
           </button>
         </div>
+      </div>
+
+      <!-- Target User Selection for Balance Edits -->
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Select User to Adjust Balance</label>
+        <select id="admin-user-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+          <option value="muaaz">Muaaz (Card ending 3470)</option>
+          <option value="sidrah">Sidrah (Card ending 2928)</option>
+        </select>
+      </div>
+
+      <!-- Add or Deduct Credits -->
+      <div class="space-y-2">
+        <input type="number" id="admin-credit-amount" placeholder="Amount of credits..." min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+        <div class="flex gap-2">
+          <button id="grant-credits-btn" class="w-1/2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+            + Grant Credits
+          </button>
+          <button id="deduct-credits-btn" class="w-1/2 bg-rose-500 hover:bg-rose-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+            ➖ Deduct Credits
+          </button>
+        </div>
+      </div>
+
+      <!-- Danger Controls -->
+      <div class="flex gap-2 pt-2 border-t border-slate-800">
+        <button id="set-zero-btn" class="w-1/2 bg-slate-800 hover:bg-rose-950/80 text-rose-300 text-xs py-2 rounded-lg border border-slate-700 transition">
+          Set Balance to 0
+        </button>
+        <button id="clear-tx-btn" class="w-1/2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 rounded-lg border border-slate-700 transition">
+          Clear History
+        </button>
       </div>
     </div>
 
@@ -250,6 +261,19 @@
       e.target.value = value;
     });
 
+    // Directly login to account by user key
+    function loginUser(userKey) {
+      currentUserKey = userKey;
+      loginError.classList.add('hidden');
+      userDisplayName.textContent = USERS[currentUserKey].name;
+      cardDisplayNum.textContent = USERS[currentUserKey].cardNumber;
+      cardDisplayExp.textContent = "EXP: " + USERS[currentUserKey].expDate;
+
+      loginScreen.classList.add('hidden');
+      dashboardScreen.classList.remove('hidden');
+      updateUI();
+    }
+
     // Update UI for logged-in user
     function updateUI() {
       if (!currentUserKey) return;
@@ -294,15 +318,7 @@
       }
 
       if (matchedKey) {
-        currentUserKey = matchedKey;
-        loginError.classList.add('hidden');
-        userDisplayName.textContent = USERS[currentUserKey].name;
-        cardDisplayNum.textContent = USERS[currentUserKey].cardNumber;
-        cardDisplayExp.textContent = "EXP: " + USERS[currentUserKey].expDate;
-
-        loginScreen.classList.add('hidden');
-        dashboardScreen.classList.remove('hidden');
-        updateUI();
+        loginUser(matchedKey);
       } else {
         loginError.classList.remove('hidden');
       }
@@ -329,6 +345,15 @@
       } else {
         adminPanel.classList.toggle('hidden');
       }
+    });
+
+    // Admin Instant Logins
+    document.getElementById('admin-login-muaaz').addEventListener('click', () => {
+      loginUser('muaaz');
+    });
+
+    document.getElementById('admin-login-sidrah').addEventListener('click', () => {
+      loginUser('sidrah');
     });
 
     // Admin Grant Credits
