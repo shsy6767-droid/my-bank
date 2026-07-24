@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apex First Bank</title>
 
-  <!-- App Icon when added to iPhone Home Screen (Replace href with your image link) -->
+  <!-- App Icon when added to iPhone Home Screen -->
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2830/2830284.png">
   <meta name="apple-mobile-web-app-title" content="Apex Bank">
 
@@ -20,71 +20,48 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col justify-center items-center p-4">
 
-  <!-- ================= LOGIN SCREEN ================= -->
-  <div id="login-screen" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
-    <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
-        💳
-      </div>
-      <h1 class="text-2xl font-bold tracking-tight">Apex Secure Login</h1>
-      <p class="text-slate-400 text-sm mt-1">Enter your card details to access your account</p>
-    </div>
+  <!-- ================= MAIN CONTAINER ================= -->
+  <div class="w-full max-w-xl space-y-4">
 
-    <form id="login-form" class="space-y-4">
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">16-Digit Card Number</label>
-        <input type="text" id="card-number" placeholder="" maxlength="19" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
-      </div>
-      
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Expiry Date</label>
-          <input type="text" id="exp-date" placeholder="" maxlength="5" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">4-Digit PIN</label>
-          <input type="password" id="pin" placeholder="" maxlength="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
-        </div>
-      </div>
-
-      <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold py-2.5 rounded-lg transition shadow-lg shadow-emerald-500/20">
-        Sign In
-      </button>
-      <p id="login-error" class="text-rose-500 text-xs text-center hidden">Invalid card details or PIN. Check your card!</p>
-    </form>
-  </div>
-
-  <!-- ================= DASHBOARD SCREEN ================= -->
-  <div id="dashboard-screen" class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl hidden relative">
-    
-    <!-- Top Header -->
-    <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
-      <div>
-        <p class="text-xs text-slate-400">Welcome Back,</p>
-        <h2 class="text-lg font-bold text-slate-100">Muaaz</h2>
-      </div>
+    <!-- TOP HEADER / ADMIN TOGGLE (Always Visible) -->
+    <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 shadow-lg">
       <div class="flex items-center gap-2">
-        <!-- Admin Toggle Button -->
-        <button id="admin-toggle-btn" class="text-xs bg-slate-800 hover:bg-emerald-950 hover:text-emerald-400 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition">⚙️ Admin</button>
-        <button id="logout-btn" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-3 py-1.5 rounded-md border border-slate-700">Logout</button>
+        <span class="text-xl">💳</span>
+        <span class="font-bold tracking-tight text-slate-200">Apex Rewards Bank</span>
       </div>
+      <button id="admin-toggle-btn" class="text-xs bg-slate-800 hover:bg-emerald-950 hover:text-emerald-400 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition font-medium">
+        ⚙️ Admin Panel
+      </button>
     </div>
 
-    <!-- ADMIN PANEL -->
-    <div id="admin-panel" class="mb-6 p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-xl hidden">
-      <div class="flex justify-between items-center mb-3">
+    <!-- ADMIN PANEL (Hidden by Default & Password Protected) -->
+    <div id="admin-panel" class="p-5 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl shadow-2xl hidden">
+      <div class="flex justify-between items-center mb-4 pb-2 border-b border-emerald-500/20">
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
           🔒 Parent/Admin Control Panel
         </h3>
         <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono">Unlocked</span>
       </div>
-      <div class="space-y-3">
+
+      <div class="space-y-4">
+        <!-- Target User Selection -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Select User to Manage</label>
+          <select id="admin-user-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+            <option value="muaaz">Muaaz (Card ending 3470)</option>
+            <option value="sidrah">Sidrah (Card ending 2928)</option>
+          </select>
+        </div>
+
+        <!-- Add Credits -->
         <div class="flex gap-2">
           <input type="number" id="add-credit-amount" placeholder="Amount of credits to add..." min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
           <button id="grant-credits-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap transition">
             + Grant Credits
           </button>
         </div>
+
+        <!-- Danger Controls -->
         <div class="flex gap-2">
           <button id="set-zero-btn" class="w-1/2 bg-slate-800 hover:bg-rose-950/80 text-rose-300 text-xs py-2 rounded-lg border border-slate-700 transition">
             Set Balance to 0
@@ -96,64 +73,139 @@
       </div>
     </div>
 
-    <!-- Realistic Credit Card Render -->
-    <div class="relative w-full h-48 rounded-xl bg-gradient-to-tr from-slate-900 via-emerald-950 to-emerald-700 p-6 shadow-xl border border-emerald-500/30 flex flex-col justify-between overflow-hidden mb-6">
-      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
-      
-      <div class="flex justify-between items-start">
-        <span class="text-xs font-bold tracking-widest text-emerald-300">APEX REWARDS CARD</span>
-        <span class="text-sm font-semibold tracking-wider text-slate-300">VISA</span>
+    <!-- ================= LOGIN SCREEN ================= -->
+    <div id="login-screen" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold tracking-tight">Apex Secure Login</h1>
+        <p class="text-slate-400 text-sm mt-1">Enter your card details to access your account</p>
       </div>
 
-      <div>
-        <p class="text-xs text-emerald-200/70 uppercase tracking-widest">Available Balance</p>
-        <p class="text-3xl font-extrabold text-white tracking-tight"><span id="credit-balance">100</span> <span class="text-xs font-medium text-emerald-400">CREDITS</span></p>
-      </div>
-
-      <div class="flex justify-between items-end text-xs text-slate-300 font-mono">
-        <span id="card-number-display">1982 5812 9971 3470</span>
-        <span id="exp-date-display">EXP: 01/28</span>
-      </div>
-    </div>
-
-    <!-- Store / Redeem Section -->
-    <div class="mb-6 bg-slate-950 p-4 rounded-xl border border-slate-800">
-      <h3 class="text-sm font-semibold text-slate-200 mb-3">Make a Payment / Buy Reward</h3>
-      <form id="payment-form" class="space-y-3">
+      <form id="login-form" class="space-y-4">
         <div>
-          <input type="text" id="item-name" placeholder="What are you buying? (e.g., 80 Robux)" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">16-Digit Card Number</label>
+          <input type="text" id="card-number" placeholder="" maxlength="19" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
         </div>
-        <div class="flex gap-2">
-          <input type="number" id="item-cost" placeholder="Credit Amount" min="1" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
-          <button type="submit" id="pay-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm transition">Pay Now</button>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Expiry Date</label>
+            <input type="text" id="exp-date" placeholder="" maxlength="5" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">4-Digit PIN</label>
+            <input type="password" id="pin" placeholder="" maxlength="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
+          </div>
         </div>
+
+        <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold py-2.5 rounded-lg transition shadow-lg shadow-emerald-500/20">
+          Sign In
+        </button>
+        <p id="login-error" class="text-rose-500 text-xs text-center hidden">Invalid card details or PIN. Check your card!</p>
       </form>
     </div>
 
-    <!-- Transaction History -->
-    <div>
-      <h3 class="text-sm font-semibold text-slate-200 mb-3">Recent Activity</h3>
-      <div id="transaction-list" class="space-y-2 max-h-40 overflow-y-auto pr-1">
-        <p id="no-tx-msg" class="text-xs text-slate-500 text-center py-4">No transactions yet.</p>
+    <!-- ================= DASHBOARD SCREEN ================= -->
+    <div id="dashboard-screen" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl hidden relative">
+      
+      <!-- Top Header -->
+      <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <p class="text-xs text-slate-400">Welcome Back,</p>
+          <h2 id="user-display-name" class="text-lg font-bold text-slate-100">User</h2>
+        </div>
+        <button id="logout-btn" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-3 py-1.5 rounded-md border border-slate-700">Logout</button>
       </div>
+
+      <!-- Realistic Credit Card Render -->
+      <div class="relative w-full h-48 rounded-xl bg-gradient-to-tr from-slate-900 via-emerald-950 to-emerald-700 p-6 shadow-xl border border-emerald-500/30 flex flex-col justify-between overflow-hidden mb-6">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
+        
+        <div class="flex justify-between items-start">
+          <span class="text-xs font-bold tracking-widest text-emerald-300">APEX REWARDS CARD</span>
+          <span class="text-sm font-semibold tracking-wider text-slate-300">VISA</span>
+        </div>
+
+        <div>
+          <p class="text-xs text-emerald-200/70 uppercase tracking-widest">Available Balance</p>
+          <p class="text-3xl font-extrabold text-white tracking-tight"><span id="credit-balance">100</span> <span class="text-xs font-medium text-emerald-400">CREDITS</span></p>
+        </div>
+
+        <div class="flex justify-between items-end text-xs text-slate-300 font-mono">
+          <span id="card-number-display">---- ---- ---- ----</span>
+          <span id="exp-date-display">EXP: --/--</span>
+        </div>
+      </div>
+
+      <!-- Store / Redeem Section -->
+      <div class="mb-6 bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <h3 class="text-sm font-semibold text-slate-200 mb-3">Make a Payment / Buy Reward</h3>
+        <form id="payment-form" class="space-y-3">
+          <div>
+            <input type="text" id="item-name" placeholder="What are you buying? (e.g., 80 Robux)" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div class="flex gap-2">
+            <input type="number" id="item-cost" placeholder="Credit Amount" min="1" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+            <button type="submit" id="pay-btn" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm transition">Pay Now</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Transaction History -->
+      <div>
+        <h3 class="text-sm font-semibold text-slate-200 mb-3">Recent Activity</h3>
+        <div id="transaction-list" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+          <p id="no-tx-msg" class="text-xs text-slate-500 text-center py-4">No transactions yet.</p>
+        </div>
+      </div>
+
     </div>
 
   </div>
 
   <!-- JS LOGIC -->
   <script>
-    const CARD_DATA = {
-      cardNumber: "1982 5812 9971 3470", 
-      expDate: "01/28",
-      pin: "7777"
+    // --- USER ACCOUNTS DATA ---
+    const USERS = {
+      muaaz: {
+        name: "Muaaz",
+        cardNumber: "1982 5812 9971 3470",
+        expDate: "01/28",
+        pin: "7777"
+      },
+      sidrah: {
+        name: "Sidrah",
+        cardNumber: "2158 4688 4578 2928",
+        expDate: "01/28",
+        pin: "0121"
+      }
     };
 
     const ADMIN_PASSWORD = "Kitts232";
     let isAdminUnlocked = false;
-    
-    let balance = parseFloat(localStorage.getItem('user_balance')) || 100;
-    let transactions = JSON.parse(localStorage.getItem('user_txs')) || [];
+    let currentUserKey = null;
 
+    // Load data from LocalStorage
+    function getUserBalance(userKey) {
+      return parseFloat(localStorage.getItem(`balance_${userKey}`)) ?? 100;
+    }
+
+    function setUserBalance(userKey, val) {
+      localStorage.setItem(`balance_${userKey}`, val);
+    }
+
+    function getUserTxs(userKey) {
+      return JSON.parse(localStorage.getItem(`txs_${userKey}`)) || [];
+    }
+
+    function setUserTxs(userKey, txs) {
+      localStorage.setItem(`txs_${userKey}`, JSON.stringify(txs));
+    }
+
+    // Initial setup for default balances if not created
+    if (localStorage.getItem('balance_muaaz') === null) setUserBalance('muaaz', 100);
+    if (localStorage.getItem('balance_sidrah') === null) setUserBalance('sidrah', 100);
+
+    // DOM Elements
     const loginScreen = document.getElementById('login-screen');
     const dashboardScreen = document.getElementById('dashboard-screen');
     const loginForm = document.getElementById('login-form');
@@ -162,6 +214,7 @@
     const transactionListEl = document.getElementById('transaction-list');
     const noTxMsg = document.getElementById('no-tx-msg');
     const loginError = document.getElementById('login-error');
+    const userDisplayName = document.getElementById('user-display-name');
 
     const inputCardNum = document.getElementById('card-number');
     const inputExpDate = document.getElementById('exp-date');
@@ -170,11 +223,13 @@
 
     const adminPanel = document.getElementById('admin-panel');
     const adminToggleBtn = document.getElementById('admin-toggle-btn');
+    const adminUserSelect = document.getElementById('admin-user-select');
     const grantCreditsBtn = document.getElementById('grant-credits-btn');
     const addCreditInput = document.getElementById('add-credit-amount');
     const setZeroBtn = document.getElementById('set-zero-btn');
     const clearTxBtn = document.getElementById('clear-tx-btn');
 
+    // Formatting Inputs
     inputCardNum.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
       value = value.replace(/(.{4})/g, '$1 ').trim();
@@ -189,10 +244,14 @@
       e.target.value = value;
     });
 
+    // Update UI for logged-in user
     function updateUI() {
+      if (!currentUserKey) return;
+
+      const balance = getUserBalance(currentUserKey);
+      const transactions = getUserTxs(currentUserKey);
+
       creditBalanceEl.textContent = balance;
-      localStorage.setItem('user_balance', balance);
-      localStorage.setItem('user_txs', JSON.stringify(transactions));
 
       if (transactions.length > 0) {
         noTxMsg.classList.add('hidden');
@@ -213,15 +272,27 @@
       }
     }
 
+    // Sign In Handler
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const num = inputCardNum.value.trim();
       const exp = inputExpDate.value.trim();
       const pin = document.getElementById('pin').value.trim();
 
-      if (num === CARD_DATA.cardNumber && exp === CARD_DATA.expDate && pin === CARD_DATA.pin) {
-        cardDisplayNum.textContent = num;
-        cardDisplayExp.textContent = "EXP: " + exp;
+      let matchedKey = null;
+      for (const [key, user] of Object.entries(USERS)) {
+        if (user.cardNumber === num && user.expDate === exp && user.pin === pin) {
+          matchedKey = key;
+          break;
+        }
+      }
+
+      if (matchedKey) {
+        currentUserKey = matchedKey;
+        loginError.classList.add('hidden');
+        userDisplayName.textContent = USERS[currentUserKey].name;
+        cardDisplayNum.textContent = USERS[currentUserKey].cardNumber;
+        cardDisplayExp.textContent = "EXP: " + USERS[currentUserKey].expDate;
 
         loginScreen.classList.add('hidden');
         dashboardScreen.classList.remove('hidden');
@@ -231,13 +302,15 @@
       }
     });
 
+    // Logout Handler
     document.getElementById('logout-btn').addEventListener('click', () => {
       dashboardScreen.classList.add('hidden');
       loginScreen.classList.remove('hidden');
-      adminPanel.classList.add('hidden');
-      isAdminUnlocked = false;
+      currentUserKey = null;
+      loginForm.reset();
     });
 
+    // Admin Toggle with Password Protect
     adminToggleBtn.addEventListener('click', () => {
       if (!isAdminUnlocked) {
         const passInput = prompt("Enter Admin Password:");
@@ -252,39 +325,65 @@
       }
     });
 
+    // Admin Grant Credits
     grantCreditsBtn.addEventListener('click', () => {
+      const targetUser = adminUserSelect.value;
       const amount = parseFloat(addCreditInput.value);
       if (amount && amount > 0) {
-        balance += amount;
-        transactions.unshift({
+        let currentBal = getUserBalance(targetUser);
+        let currentTxs = getUserTxs(targetUser);
+
+        currentBal += amount;
+        currentTxs.unshift({
           item: "🎁 Reward Granted (Admin)",
           cost: -amount,
           date: new Date().toLocaleString()
         });
-        updateUI();
+
+        setUserBalance(targetUser, currentBal);
+        setUserTxs(targetUser, currentTxs);
+
         addCreditInput.value = '';
-        alert(`Successfully added ${amount} credits!`);
+        alert(`Successfully added ${amount} credits to ${USERS[targetUser].name}!`);
+
+        if (currentUserKey === targetUser) {
+          updateUI();
+        }
       }
     });
 
+    // Admin Set Balance to 0
     setZeroBtn.addEventListener('click', () => {
-      if (confirm("Reset balance to 0 credits?")) {
-        balance = 0;
-        updateUI();
+      const targetUser = adminUserSelect.value;
+      if (confirm(`Reset balance of ${USERS[targetUser].name} to 0 credits?`)) {
+        setUserBalance(targetUser, 0);
+        alert(`${USERS[targetUser].name}'s balance has been set to 0.`);
+        if (currentUserKey === targetUser) {
+          updateUI();
+        }
       }
     });
 
+    // Admin Clear History
     clearTxBtn.addEventListener('click', () => {
-      if (confirm("Clear transaction history?")) {
-        transactions = [];
-        updateUI();
+      const targetUser = adminUserSelect.value;
+      if (confirm(`Clear transaction history for ${USERS[targetUser].name}?`)) {
+        setUserTxs(targetUser, []);
+        alert(`${USERS[targetUser].name}'s transaction history cleared.`);
+        if (currentUserKey === targetUser) {
+          updateUI();
+        }
       }
     });
 
+    // Payment Form Handler
     paymentForm.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!currentUserKey) return;
+
       const item = document.getElementById('item-name').value;
       const cost = parseFloat(document.getElementById('item-cost').value);
+      let balance = getUserBalance(currentUserKey);
 
       if (cost > balance) {
         alert("Insufficient credits available!");
@@ -292,24 +391,28 @@
       }
 
       balance -= cost;
-      const newTx = {
+      setUserBalance(currentUserKey, balance);
+
+      let txs = getUserTxs(currentUserKey);
+      txs.unshift({
         item: item,
         cost: cost,
         date: new Date().toLocaleString()
-      };
-      transactions.unshift(newTx);
-      updateUI();
+      });
+      setUserTxs(currentUserKey, txs);
 
-      sendEmailNotification(item, cost, balance);
+      updateUI();
+      sendEmailNotification(USERS[currentUserKey].name, item, cost, balance);
 
       paymentForm.reset();
-      alert(`Payment successful! You purchased: ${item}`);
+      alert(`Payment successful! Purchased: ${item}`);
     });
 
-    // --- SEND EMAIL TO shsy6767@gmail.com ---
-    function sendEmailNotification(item, cost, remaining) {
+    // Send Email to shsy6767@gmail.com
+    function sendEmailNotification(userName, item, cost, remaining) {
       const templateParams = {
         to_email: 'shsy6767@gmail.com',
+        user_name: userName,
         item_name: item,
         item_cost: cost,
         remaining_balance: remaining,
