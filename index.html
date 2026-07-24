@@ -28,7 +28,7 @@
     <form id="login-form" class="space-y-4">
       <div>
         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">16-Digit Card Number</label>
-        <input type="text" id="card-number" placeholder="4000 1234 5678 9010" maxlength="19" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
+        <input type="text" id="card-number" placeholder="1982 5812 9971 3470" maxlength="19" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 transition font-mono">
       </div>
       
       <div class="grid grid-cols-2 gap-3">
@@ -76,8 +76,8 @@
       </div>
 
       <div class="flex justify-between items-end text-xs text-slate-300 font-mono">
-        <span id="card-number-display">4000 1234 5678 9010</span>
-        <span id="exp-date-display">EXP: 12/28</span>
+        <span id="card-number-display">1982 5812 9971 3470</span>
+        <span id="exp-date-display">EXP: 01/28</span>
       </div>
     </div>
 
@@ -107,11 +107,11 @@
 
   <!-- JS LOGIC -->
   <script>
-    // --- SET YOUR FAKE CARD CREDENTIALS HERE ---
+    // --- UPDATED CARD CREDENTIALS ---
     const CARD_DATA = {
-      cardNumber: "4000 1234 5678 9010", // Spaces included
-      expDate: "12/28",
-      pin: "1234"
+      cardNumber: "1982 5812 9971 3470", // Spaces included
+      expDate: "01/28",
+      pin: "7777"
     };
     
     let balance = parseFloat(localStorage.getItem('user_balance')) || 100;
